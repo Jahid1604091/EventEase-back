@@ -17,11 +17,8 @@ export const registerEvent = asyncHandler(async (req, res) => {
     if (attendeeCount >= event.maxAttendees) {
         return next(new ErrorResponse('No More registration possible!', 400));
     }
-    const registerEvent = new RegisterEvent({ event: eventId, user });
+    const registerEvent = new RegisterEvent({ event: eventId, user});
     const newRegisteredEvent = await registerEvent.save();
-    if (newRegisteredEvent) {
-        newRegisteredEvent.attendees += 1;
-    }
     return res.status(200).json({
         success: true,
         msg: "Event registered successfully!",

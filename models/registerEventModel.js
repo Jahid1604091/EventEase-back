@@ -3,17 +3,13 @@ import mongoose from "mongoose";
 const registerEventSchema = mongoose.Schema(
     {
         event: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Event",
             required: true,
         },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-        },
-        attendees: {
-            type: Number,
-            default: 0,
         },
         isSoftDeleted: {
             type: Boolean,

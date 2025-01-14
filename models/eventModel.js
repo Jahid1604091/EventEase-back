@@ -25,6 +25,9 @@ const eventSchema = mongoose.Schema({
         type:Boolean,
         default:false
     },
+    eventDate:{
+        type: Date,
+    },
     softDeletedAt:{
         type: Date,
     },
