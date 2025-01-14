@@ -7,6 +7,7 @@ import Event from "../models/eventModel.js";
 //@desc     POST: register a new event by a user
 //@access   public
 export const registerEvent = asyncHandler(async (req, res) => {
+    const io = req.io;
     const eventId = req.params.id;
     const user = req.user._id;
     const event = await Event.findById(eventId);
@@ -17,8 +18,14 @@ export const registerEvent = asyncHandler(async (req, res) => {
     if (attendeeCount >= event.maxAttendees) {
         return next(new ErrorResponse('No More registration possible!', 400));
     }
-    const registerEvent = new RegisterEvent({ event: eventId, user});
+    const registerEvent = new RegisterEvent({ event: eventId, user });
     const newRegisteredEvent = await registerEvent.save();
+    if (newRegisteredEvent) {
+        //send notification
+        io.emit('newRegister', {
+            msg: "A new user registered now!"
+        });
+    }
     return res.status(200).json({
         success: true,
         msg: "Event registered successfully!",
